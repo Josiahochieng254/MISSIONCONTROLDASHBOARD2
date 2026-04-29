@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>AI Mission Control | 15 Agents Online | Responsive Dashboard</title>
+    <title>AI Mission Control | 15 Agents Online</title>
     <style>
         * {
             margin: 0;
@@ -11,45 +11,74 @@
             box-sizing: border-box;
         }
 
-        body {
-            background: radial-gradient(circle at 20% 30%, #0a0a0a, #000000);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            color: #e5e7eb;
-            padding: clamp(0.75rem, 3vw, 1.5rem);
-            min-height: 100vh;
+        /* VIDEO BACKGROUND - fullscreen immersive blue */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+        
+        /* Dark overlay to ensure readability and depth, matching video's blue mood */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 20%, rgba(8, 28, 68, 0.65), rgba(2, 10, 25, 0.85));
+            z-index: -1;
+            backdrop-filter: blur(1px);
         }
 
-        /* Custom Scrollbar */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Mono', monospace;
+            color: #e2e8f0;
+            padding: clamp(0.75rem, 3vw, 1.5rem);
+            min-height: 100vh;
+            letter-spacing: 0.01em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Custom scrollbar - electric blue accents */
         ::-webkit-scrollbar {
             width: 4px;
             height: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: #1f1f1f;
+            background: #0f172a;
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #b45309;
+            background: #3b82f6;
             border-radius: 10px;
+            box-shadow: inset 0 0 2px #00000066;
         }
 
-        /* Container - Responsive */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
         }
 
-        /* Header - Responsive */
+        /* HEADER with electric blue accents - glassmorphism style to blend with video */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding-bottom: clamp(1rem, 4vw, 1.5rem);
             margin-bottom: clamp(1rem, 4vw, 1.5rem);
-            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.5);
             flex-wrap: wrap;
             gap: clamp(0.75rem, 3vw, 1rem);
+            background: rgba(5, 15, 35, 0.3);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: clamp(0.75rem, 3vw, 1rem) clamp(1rem, 4vw, 1.5rem);
         }
         .logo-area {
             display: flex;
@@ -60,48 +89,55 @@
         .live-dot {
             width: clamp(8px, 2vw, 10px);
             height: clamp(8px, 2vw, 10px);
-            background-color: #f59e0b;
+            background-color: #3b82f6;
             border-radius: 50%;
-            animation: pulse 1.5s infinite;
+            animation: pulse 1.6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 6px #3b82f6;
         }
         @keyframes pulse {
-            0% { opacity: 0.4; transform: scale(0.8);}
-            100% { opacity: 1; transform: scale(1.2);}
+            0% { opacity: 0.5; transform: scale(0.8); box-shadow: 0 0 0px #3b82f6;}
+            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 14px #3b82f6;}
         }
         h1 {
-            font-size: clamp(1.2rem, 5vw, 1.6rem);
-            background: linear-gradient(135deg, #ffffff, #fbbf24);
+            font-size: clamp(1.2rem, 5vw, 1.7rem);
+            background: linear-gradient(135deg, #b9e0ff, #3b82f6, #1e40af);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            font-weight: 600;
+            letter-spacing: -0.3px;
         }
         .badge {
-            background: rgba(245, 158, 11, 0.15);
-            padding: 0.25rem 0.75rem;
+            background: rgba(59, 130, 246, 0.2);
+            padding: 0.25rem 0.9rem;
             border-radius: 40px;
             font-size: clamp(0.6rem, 2vw, 0.7rem);
-            font-weight: 500;
-            color: #fbbf24;
-            border: 1px solid rgba(245, 158, 11, 0.3);
+            font-weight: 600;
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.6);
+            backdrop-filter: blur(4px);
+            font-family: monospace;
         }
         .logout-btn {
-            background: transparent;
-            border: 1px solid #2d2d2d;
-            color: #9ca3af;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid #3b82f6;
+            color: #bfdbfe;
             padding: clamp(0.4rem, 2vw, 0.5rem) clamp(1rem, 3vw, 1.2rem);
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s;
             font-weight: 500;
             font-size: clamp(0.75rem, 2.5vw, 0.875rem);
         }
         .logout-btn:hover {
-            border-color: #f59e0b;
-            color: #f59e0b;
-            background: rgba(245, 158, 11, 0.05);
+            border-color: #60a5fa;
+            color: #ffffff;
+            background: rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
         }
 
-        /* KPI Grid - Fully Responsive */
+        /* KPI cards - glassmorphic blue */
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
@@ -109,16 +145,19 @@
             margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
         }
         .kpi-card {
-            background: rgba(18, 18, 18, 0.7);
-            backdrop-filter: blur(8px);
-            border: 1px solid #2a2a2a;
+            background: rgba(8, 20, 40, 0.55);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 130, 246, 0.4);
             border-radius: clamp(16px, 4vw, 20px);
             padding: clamp(0.75rem, 3vw, 1rem);
             transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         .kpi-card:hover {
-            border-color: #f59e0b;
+            border-color: #3b82f6;
             transform: translateY(-2px);
+            background: rgba(12, 26, 50, 0.7);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.4);
         }
         .kpi-header {
             display: flex;
@@ -127,30 +166,35 @@
             margin-bottom: clamp(0.5rem, 2vw, 0.75rem);
         }
         .kpi-icon {
-            font-size: clamp(1.2rem, 4vw, 1.4rem);
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            filter: drop-shadow(0 0 2px #3b82f6);
         }
         .trend {
             font-size: clamp(0.65rem, 2vw, 0.7rem);
-            font-weight: 600;
-            padding: 0.2rem 0.4rem;
-            border-radius: 20px;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 40px;
+            font-family: monospace;
         }
-        .trend.up { background: #14532d; color: #4ade80; }
-        .trend.down { background: #7f1d1d; color: #f87171; }
+        .trend.up { background: #064e3b80; color: #4ade80; border: 1px solid #22c55e; }
+        .trend.down { background: #7f1d1d80; color: #fca5a5; border: 1px solid #ef4444; }
         .kpi-value {
             font-size: clamp(1.3rem, 5vw, 1.7rem);
             font-weight: 700;
             margin-bottom: 0.25rem;
             word-break: break-word;
+            color: #e0f2fe;
+            letter-spacing: -0.3px;
         }
         .kpi-label {
             font-size: clamp(0.65rem, 2vw, 0.7rem);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #9ca3af;
+            letter-spacing: 1.2px;
+            color: #9ac2e6;
+            font-weight: 500;
         }
 
-        /* Section Title - Responsive */
+        /* Section dividers — electric blue glow */
         .section-title {
             display: flex;
             align-items: center;
@@ -158,16 +202,21 @@
             margin: clamp(1rem, 4vw, 1.8rem) 0 clamp(0.75rem, 3vw, 1rem) 0;
         }
         .gold-bar {
-            width: 4px;
-            height: clamp(16px, 4vw, 20px);
-            background: #f59e0b;
-            border-radius: 4px;
+            width: 5px;
+            height: clamp(18px, 4vw, 22px);
+            background: linear-gradient(145deg, #3b82f6, #1e3a8a);
+            border-radius: 3px;
+            box-shadow: 0 0 5px #3b82f6;
         }
         .section-title h2 {
             font-size: clamp(1rem, 4vw, 1.3rem);
+            font-weight: 500;
+            letter-spacing: -0.2px;
+            color: #e0f2fe;
+            text-shadow: 0 0 5px rgba(59,130,246,0.3);
         }
 
-        /* Agent Filters - Responsive */
+        /* filters: blue tactical glass */
         .filters {
             display: flex;
             gap: clamp(0.4rem, 2vw, 0.5rem);
@@ -175,23 +224,32 @@
             flex-wrap: wrap;
         }
         .filter-btn {
-            background: #1a1a1a;
-            border: none;
+            background: rgba(15, 30, 55, 0.6);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(59, 130, 246, 0.5);
             padding: clamp(0.3rem, 1.5vw, 0.4rem) clamp(0.8rem, 3vw, 1rem);
             border-radius: 40px;
             font-size: clamp(0.7rem, 2.5vw, 0.8rem);
             cursor: pointer;
-            color: #9ca3af;
+            color: #c7e2ff;
             transition: all 0.2s;
             white-space: nowrap;
+            font-weight: 500;
         }
         .filter-btn.active {
-            background: #f59e0b;
-            color: #000;
-            font-weight: 600;
+            background: #3b82f6;
+            color: #ffffff;
+            font-weight: 700;
+            border-color: #3b82f6;
+            box-shadow: 0 0 12px #3b82f6;
+        }
+        .filter-btn:hover:not(.active) {
+            border-color: #60a5fa;
+            color: #ffffff;
+            background: rgba(59, 130, 246, 0.3);
         }
 
-        /* Agent Grid - Responsive Cards */
+        /* Agent cards — deep glass cobalt */
         .agent-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
@@ -199,17 +257,20 @@
             margin-bottom: clamp(1.5rem, 4vw, 2rem);
         }
         .agent-card {
-            background: #111111;
-            border: 1px solid #262626;
+            background: rgba(6, 18, 35, 0.55);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 130, 246, 0.4);
             border-radius: clamp(16px, 4vw, 20px);
             padding: clamp(0.75rem, 3vw, 1rem);
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
         .agent-card:hover {
-            border-color: #f59e0b;
+            border-color: #3b82f6;
             transform: translateY(-3px);
-            background: #161616;
+            background: rgba(12, 26, 50, 0.7);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.5), 0 0 0 1px #3b82f6;
         }
         .agent-top {
             display: flex;
@@ -228,72 +289,79 @@
         .avatar {
             width: clamp(35px, 8vw, 40px);
             height: clamp(35px, 8vw, 40px);
-            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            background: linear-gradient(145deg, #1e3a8a, #0f172a);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: clamp(1.1rem, 4vw, 1.3rem);
             flex-shrink: 0;
+            border: 1px solid #3b82f6;
         }
         .agent-name {
             font-weight: 700;
             font-size: clamp(0.9rem, 3vw, 1rem);
+            color: #e0f2fe;
         }
         .agent-role {
             font-size: clamp(0.65rem, 2.5vw, 0.7rem);
-            color: #a1a1aa;
+            color: #a5c9ff;
+            font-family: monospace;
         }
         .status-light {
             width: clamp(8px, 2.5vw, 10px);
             height: clamp(8px, 2.5vw, 10px);
             border-radius: 50%;
             flex-shrink: 0;
+            box-shadow: 0 0 5px currentColor;
         }
-        .green { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
-        .yellow { background: #eab308; box-shadow: 0 0 6px #eab308; }
-        .red { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+        .green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+        .yellow { background: #eab308; box-shadow: 0 0 8px #eab308; }
+        .red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
         .agent-task {
             font-size: clamp(0.75rem, 2.5vw, 0.8rem);
-            color: #cbd5e1;
+            color: #cfe3ff;
             padding-top: 0.5rem;
-            border-top: 1px solid #252525;
+            border-top: 1px solid rgba(59, 130, 246, 0.3);
             word-break: break-word;
+            font-family: monospace;
         }
 
-        /* Chat Section - Fully Responsive */
+        /* Chat — deep blue glassmorphism */
         .chat-container {
-            background: #0c0c0c;
-            border: 1px solid #2a2a2a;
+            background: rgba(2, 10, 22, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 130, 246, 0.4);
             border-radius: clamp(20px, 5vw, 24px);
             overflow: hidden;
             margin-top: 0.5rem;
         }
         .chat-header {
-            background: #0f0f0f;
+            background: rgba(8, 18, 35, 0.6);
             padding: clamp(0.6rem, 2.5vw, 0.8rem);
-            border-bottom: 1px solid #262626;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.4);
             display: flex;
             gap: clamp(0.4rem, 2vw, 0.5rem);
             flex-wrap: wrap;
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
         }
         .chat-agent-btn {
-            background: #1f1f1f;
-            border: none;
+            background: rgba(15, 30, 55, 0.7);
+            border: 1px solid #2d4a7a;
             padding: clamp(0.3rem, 1.5vw, 0.4rem) clamp(0.7rem, 2.5vw, 0.9rem);
             border-radius: 30px;
             font-size: clamp(0.7rem, 2.5vw, 0.75rem);
             cursor: pointer;
-            color: #aaa;
+            color: #bfd9ff;
             white-space: nowrap;
             transition: all 0.2s;
         }
         .chat-agent-btn.active {
-            background: #f59e0b;
-            color: black;
-            font-weight: 600;
+            background: #3b82f6;
+            color: white;
+            font-weight: 700;
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px #3b82f6;
         }
         .messages-area {
             height: clamp(280px, 40vh, 320px);
@@ -302,6 +370,7 @@
             display: flex;
             flex-direction: column;
             gap: clamp(0.6rem, 2vw, 0.8rem);
+            background: rgba(1, 6, 18, 0.4);
         }
         .message {
             display: flex;
@@ -313,86 +382,103 @@
             flex-direction: row-reverse;
         }
         .message-bubble {
-            background: #1e1e1e;
+            background: rgba(15, 30, 55, 0.8);
+            backdrop-filter: blur(4px);
             padding: clamp(0.5rem, 2vw, 0.6rem) clamp(0.75rem, 2.5vw, 1rem);
             border-radius: 18px;
             font-size: clamp(0.8rem, 2.5vw, 0.85rem);
             line-height: 1.4;
             word-break: break-word;
+            border: 1px solid #2e5480;
         }
         .message.outgoing .message-bubble {
-            background: #f59e0b;
-            color: black;
+            background: #3b82f6;
+            color: #ffffff;
+            border-color: #60a5fa;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.3);
         }
         .message-meta {
             font-size: clamp(0.55rem, 2vw, 0.6rem);
-            color: #777;
+            color: #aac8ff;
             margin-bottom: 0.2rem;
+            font-family: monospace;
         }
         .chat-input-area {
             display: flex;
             gap: clamp(0.4rem, 2vw, 0.5rem);
             padding: clamp(0.75rem, 3vw, 1rem);
-            border-top: 1px solid #262626;
-            background: #0a0a0a;
-            flex-wrap: wrap;
+            border-top: 1px solid rgba(59, 130, 246, 0.4);
+            background: rgba(6, 14, 28, 0.6);
         }
         .chat-input {
             flex: 1;
-            background: #1c1c1c;
-            border: 1px solid #333;
+            background: rgba(10, 22, 45, 0.8);
+            border: 1px solid #2d4a7a;
             border-radius: 40px;
             padding: clamp(0.6rem, 2.5vw, 0.7rem) clamp(0.8rem, 3vw, 1rem);
-            color: white;
+            color: #e2edff;
             outline: none;
             font-size: clamp(0.8rem, 2.5vw, 0.85rem);
-            min-width: 120px;
         }
         .chat-input:focus {
-            border-color: #f59e0b;
+            border-color: #3b82f6;
+            box-shadow: 0 0 8px #3b82f6;
         }
         .send-btn {
-            background: #f59e0b;
+            background: #3b82f6;
             border: none;
             border-radius: 40px;
             padding: 0 clamp(1rem, 4vw, 1.4rem);
-            font-weight: bold;
-            color: black;
+            font-weight: 700;
+            color: white;
             cursor: pointer;
             font-size: clamp(0.8rem, 2.5vw, 0.85rem);
-            white-space: nowrap;
+            transition: 0.2s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
+        .send-btn:hover {
+            background: #2563eb;
+            box-shadow: 0 0 12px #3b82f6;
         }
 
-        /* Login Screen - Responsive */
+        /* Login screen — glassmorphic blue command gate */
         .login-screen {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle at 30% 10%, #000, #0a0a0a);
             padding: 1rem;
+            position: relative;
+            z-index: 2;
         }
         .login-card {
-            background: #0f0f0f;
+            background: rgba(8, 18, 38, 0.65);
+            backdrop-filter: blur(16px);
             padding: clamp(1.5rem, 6vw, 2rem);
             border-radius: clamp(24px, 6vw, 32px);
-            border: 1px solid #f59e0b30;
+            border: 1px solid #3b82f6;
+            box-shadow: 0 20px 35px -12px black, 0 0 20px rgba(59,130,246,0.2);
             width: 100%;
             max-width: 400px;
-            margin: 1rem;
         }
         .login-input {
             width: 100%;
-            background: #1e1e1e;
-            border: 1px solid #333;
+            background: rgba(10, 22, 45, 0.8);
+            border: 1px solid #2d4a7a;
             padding: clamp(0.7rem, 2.5vw, 0.8rem);
             border-radius: 14px;
             margin: 0.8rem 0;
-            color: white;
+            color: #e0edff;
             font-size: clamp(0.8rem, 2.5vw, 0.9rem);
         }
+        .login-input:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 8px #3b82f6;
+        }
         .login-btn {
-            background: #f59e0b;
+            background: #3b82f6;
             width: 100%;
             padding: clamp(0.7rem, 2.5vw, 0.8rem);
             border: none;
@@ -401,164 +487,137 @@
             margin-top: 0.5rem;
             cursor: pointer;
             font-size: clamp(0.9rem, 3vw, 1rem);
+            transition: 0.2s;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-
+        .login-btn:hover {
+            background: #2563eb;
+            box-shadow: 0 0 15px #3b82f6;
+        }
         .hidden {
             display: none;
         }
 
-        /* Mobile optimizations */
         @media (max-width: 640px) {
-            body {
-                padding: 0.75rem;
-            }
-            .kpi-grid {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            }
-            .agent-grid {
-                grid-template-columns: 1fr;
-            }
-            .message {
-                max-width: 90%;
-            }
-            .chat-agent-btn {
-                font-size: 0.7rem;
-            }
+            body { padding: 0.75rem; }
+            .agent-grid { grid-template-columns: 1fr; }
+            .message { max-width: 90%; }
+            .header { flex-direction: column; align-items: stretch; }
         }
-
         @media (max-width: 480px) {
-            .logo-area {
-                width: 100%;
-                justify-content: space-between;
-            }
-            .logout-btn {
-                width: 100%;
-                text-align: center;
-            }
-            .kpi-card {
-                padding: 0.6rem;
-            }
-            .kpi-value {
-                font-size: 1.2rem;
-            }
+            .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
         }
-
-        @media (min-width: 1024px) {
-            .agent-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
-        }
-
-        /* Touch-friendly */
         @media (hover: none) {
-            .agent-card:active {
-                transform: scale(0.98);
-                background: #1a1a1a;
-            }
-            button {
-                -webkit-tap-highlight-color: transparent;
-            }
+            .agent-card:active { transform: scale(0.98); background: #1e3a8a80; }
         }
     </style>
 </head>
 <body>
 
+<!-- VIDEO BACKGROUND - pagebackground.mp4 (fully blue cinematic) -->
+<video class="video-background" autoplay loop muted playsinline>
+    <source src="pagebackground.mp4" type="video/mp4">
+    <!-- fallback: subtle gradient if video missing -->
+</video>
+<div class="overlay"></div>
+
 <div id="app">
-    <!-- LOGIN SECTION -->
+    <!-- LOGIN SCREEN blue command access -->
     <div id="loginScreen" class="login-screen">
         <div class="login-card">
             <div style="text-align:center; margin-bottom:1rem;">
-                <span style="font-size: clamp(2rem, 8vw, 2.5rem);">🤖</span>
-                <h2 style="margin-top:0.5rem; font-size: clamp(1.3rem, 5vw, 1.6rem);">AI Mission Control</h2>
-                <p style="color:#aaa; font-size: clamp(0.75rem, 3vw, 0.85rem);">Sign in to command agents</p>
+                <span style="font-size: clamp(2rem, 8vw, 2.5rem); filter: drop-shadow(0 0 8px #3b82f6);">🤖</span>
+                <h2 style="margin-top:0.5rem; font-size: clamp(1.3rem, 5vw, 1.6rem); color:#e0f2fe;">AI Mission Control</h2>
+                <p style="color:#aac9ff; font-size: clamp(0.75rem, 3vw, 0.85rem);">Sign in to command agents</p>
             </div>
-            <input type="email" id="loginEmail" class="login-input" placeholder="Email" value="me@example.com">
-            <input type="password" id="loginPassword" class="login-input" placeholder="Password" value="123456">
-            <button class="login-btn" id="doLoginBtn">🚀 Access Dashboard</button>
-            <p style="font-size:0.7rem; text-align:center; margin-top:1rem; color:#555;">demo: any email / any password</p>
+            <input type="email" id="loginEmail" class="login-input" placeholder="COMMANDER ID" value="commander@blueops.com">
+            <input type="password" id="loginPassword" class="login-input" placeholder="ACCESS KEY" value="123456">
+            <button class="login-btn" id="doLoginBtn">⚡ ACCESS DASHBOARD</button>
+            <p style="font-size:0.65rem; text-align:center; margin-top:1rem; color:#6c8fc0;">demo: any email/pass</p>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
+    <!-- MAIN DASHBOARD — mission control interface with video backdrop -->
     <div id="dashboardScreen" class="container hidden">
         <div class="header">
             <div class="logo-area">
                 <div class="live-dot"></div>
-                <h1>AI Mission Control</h1>
-                <div class="badge">15 AGENTS ACTIVE</div>
+                <h1>◈AI Mission Control</h1>
+                <div class="badge">⚡ 15 ACTIVE VESSELS · PM2 UPTIME</div>
             </div>
-            <button class="logout-btn" id="logoutBtn">← Sign Out</button>
+            <button class="logout-btn" id="logoutBtn">⤫ TERMINATE SESSION</button>
         </div>
 
-        <!-- TOP: KPI SECTION -->
+        <!-- COMMAND TELEMETRY (KPI) - blue theme -->
         <div class="kpi-grid" id="kpiGrid"></div>
 
-        <!-- MIDDLE: AGENTS -->
+        <!-- AGENT FLEET SECTION -->
         <div class="section-title">
             <div class="gold-bar"></div>
-            <h2>🤖 Agent Fleet</h2>
+            <h2>🤖 AGENT FLEET · OPERATIONAL STATUS</h2>
         </div>
         <div class="filters" id="agentFilters"></div>
         <div class="agent-grid" id="agentGrid"></div>
 
-        <!-- BOTTOM: CHAT -->
+        <!-- MISSION LOG CHAT - blue comm channel -->
         <div class="section-title">
             <div class="gold-bar"></div>
-            <h2>💬 Team & Agent Chat</h2>
+            <h2>📡 MISSION LOG · COMM CHANNEL</h2>
         </div>
         <div class="chat-container">
             <div class="chat-header" id="chatFilters"></div>
             <div class="messages-area" id="messagesArea"></div>
             <div class="chat-input-area">
-                <input type="text" class="chat-input" id="chatInput" placeholder="Type a message...">
-                <button class="send-btn" id="sendMsgBtn">Send →</button>
+                <input type="text" class="chat-input" id="chatInput" placeholder="Transmit message to active channel ...">
+                <button class="send-btn" id="sendMsgBtn">⟫ SEND</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // ---------- DATA ----------
+    // AGENT FLEET: 15 vessels — inspired by reference names (Hermes, Heph, Ares etc)
     const agents = [
-        { id: 1, name: "Aurora", role: "Sales Lead", status: "green", currentTask: "Qualifying inbound leads", icon: "📈" },
-        { id: 2, name: "Nexus", role: "Marketing", status: "green", currentTask: "Optimizing ad campaigns", icon: "📊" },
-        { id: 3, name: "Scribe", role: "Content Writer", status: "green", currentTask: "Drafting blog post", icon: "✍️" },
-        { id: 4, name: "Ledger", role: "Finance", status: "yellow", currentTask: "Reconciling API data", icon: "💰" },
-        { id: 5, name: "Sentinel", role: "Admin", status: "green", currentTask: "Monitoring servers", icon: "🛡️" },
-        { id: 6, name: "Pulse", role: "Social Media", status: "green", currentTask: "Scheduling tweets", icon: "🐦" },
-        { id: 7, name: "Vector", role: "CRM Sync", status: "red", currentTask: "GoHighLevel rate limit", icon: "🔄" },
-        { id: 8, name: "Echo", role: "Customer Support", status: "yellow", currentTask: "Handling 3 tickets", icon: "🎧" },
-        { id: 9, name: "Nova", role: "Lead Gen", status: "green", currentTask: "Scraping new contacts", icon: "🔍" },
-        { id: 10, name: "Cipher", role: "Security", status: "green", currentTask: "Log analysis", icon: "🔒" },
-        { id: 11, name: "Vox", role: "Voice AI", status: "yellow", currentTask: "Processing voice notes", icon: "🎙️" },
-        { id: 12, name: "Loom", role: "Notion Sync", status: "green", currentTask: "Updating tasks DB", icon: "📝" },
-        { id: 13, name: "Blaze", role: "Blotato API", status: "green", currentTask: "Publishing carousel", icon: "⚡" },
-        { id: 14, name: "Atlas", role: "Analytics", status: "green", currentTask: "Building report", icon: "🧠" },
-        { id: 15, name: "Kode", role: "DevOps", status: "green", currentTask: "Deploying updates", icon: "💻" }
+        { id: 1, name: "Hermes", role: "Chief of Staff", status: "green", currentTask: "Preparing Monday priorities for Akhtar", icon: "📋" },
+        { id: 2, name: "Heph", role: "COO", status: "green", currentTask: "Reconciling ops blockers across Notion", icon: "⚙️" },
+        { id: 3, name: "Ares", role: "Sales / CSO", status: "yellow", currentTask: "Drafting proposal for Vaughan deal", icon: "🤝" },
+        { id: 4, name: "Midas", role: "M&A Deals", status: "green", currentTask: "Screening two acquisition targets", icon: "💰" },
+        { id: 5, name: "Nike", role: "CMO", status: "green", currentTask: "Sequencing campaign posts for retreat offer", icon: "📢" },
+        { id: 6, name: "Apollo", role: "LinkedIn Agent", status: "green", currentTask: "Writing founder authority post", icon: "🔗" },
+        { id: 7, name: "Echo", role: "Email VA", status: "green", currentTask: "Sending follow-up batch to warm leads", icon: "✉️" },
+        { id: 8, name: "Iggy", role: "Instagram", status: "yellow", currentTask: "Replying to high-intent Instagram DMs", icon: "📸" },
+        { id: 9, name: "Victor", role: "Video / IP", status: "green", currentTask: "Rendering testimonial short-form edits", icon: "🎬" },
+        { id: 10, name: "Gina", role: "Google Drive", status: "green", currentTask: "Organising retreat asset folders", icon: "📁" },
+        { id: 11, name: "Rex", role: "Brand Reputation", status: "green", currentTask: "Monitoring reviews and brand mentions", icon: "🛡️" },
+        { id: 12, name: "Croesus", role: "CFO", status: "green", currentTask: "Reconciling April cash movement", icon: "📊" },
+        { id: 13, name: "Hestia", role: "Community", status: "green", currentTask: "Welcoming new Inner Circle members", icon: "🏛️" },
+        { id: 14, name: "Bill", role: "Mentor", status: "green", currentTask: "Preparing weekly accountability prompts", icon: "🧠" },
+        { id: 15, name: "Apex", role: "Health Coach", status: "yellow", currentTask: "Waiting on wearable sync credentials", icon: "🏋️" }
     ];
 
-    let currentUser = { email: "me@example.com", name: "Me" };
+    let currentUser = { email: "commander@blueops.com", name: "Commander" };
     let kpiData = [
-        { id: "deals", label: "Deals in Pipeline", value: "$342,500", change: 12, icon: "💼" },
-        { id: "cashflow", label: "Money In / Out", value: "+$48.2K / -$22.1K", change: 8, icon: "💵" },
-        { id: "social", label: "Posts Published", value: "147", change: 23, icon: "📱" },
-        { id: "members", label: "New Members", value: "892", change: -3, icon: "👥" },
-        { id: "emails", label: "Emails Sent", value: "12,847", change: 18, icon: "✉️" },
-        { id: "tasks", label: "Tasks Done", value: "2,341", change: 34, icon: "✅" }
+        { id: "sales_pipeline", label: "SALES PIPELINE", value: "$419,295", change: 14, icon: "📈" },
+        { id: "deals", label: "DEALS CLOSED", value: "28", change: 22, icon: "🏆" },
+        { id: "content_new", label: "CONTENT ASSETS", value: "147", change: 8, icon: "🎙️" },
+        { id: "mrr", label: "MRR", value: "$94.2K", change: 12, icon: "💎" },
+        { id: "cash_in", label: "CASH IN", value: "+$62.4K", change: 9, icon: "⬆️" },
+        { id: "community", label: "INNER CIRCLE", value: "1,247", change: 17, icon: "👥" }
     ];
 
     let messages = [
-        { id: "1", sender: "me@example.com", senderName: "Me", agentId: null, content: "Good morning team! How are agents performing?", timestamp: new Date(Date.now() - 3600000).toISOString() },
-        { id: "2", sender: "agent", senderName: "Aurora", agentId: 1, content: "All leads are qualified. Ready for follow-ups.", timestamp: new Date(Date.now() - 3500000).toISOString() },
-        { id: "3", sender: "nick@example.com", senderName: "Nick", agentId: null, content: "Marketing campaigns are up 12%", timestamp: new Date(Date.now() - 3400000).toISOString() },
-        { id: "4", sender: "agent", senderName: "Vector", agentId: 7, content: "⚠️ CRM rate limit hit, retrying in 5min", timestamp: new Date(Date.now() - 3000000).toISOString() },
-        { id: "5", sender: "mary@example.com", senderName: "Mary", agentId: null, content: "Content queue is full, Scribe is crushing it", timestamp: new Date(Date.now() - 2000000).toISOString() },
+        { id: "1", sender: "commander@blueops.com", senderName: "Commander", agentId: null, content: "BLUE DECK: all agents confirm status. Hermes, sync priorities.", timestamp: new Date(Date.now() - 4200000).toISOString() },
+        { id: "2", sender: "agent", senderName: "Hermes", agentId: 1, content: "Priority deck ready. Monday alignment scheduled for 9am.", timestamp: new Date(Date.now() - 3800000).toISOString() },
+        { id: "3", sender: "agent", senderName: "Ares", agentId: 3, content: "Vaughan deal proposal 80% drafted. Awaiting final numbers from Croesus.", timestamp: new Date(Date.now() - 3100000).toISOString() },
+        { id: "4", sender: "agent", senderName: "Croesus", agentId: 12, content: "Cash motion reconciled. April surplus +12% ⬆️", timestamp: new Date(Date.now() - 2500000).toISOString() },
+        { id: "5", sender: "commander@blueops.com", senderName: "Commander", agentId: null, content: "Acknowledge. Fleet maintain blue protocol. Midas, acquisition update?", timestamp: new Date(Date.now() - 1800000).toISOString() },
+        { id: "6", sender: "agent", senderName: "Midas", agentId: 4, content: "Screening two targets; due diligence phase.", timestamp: new Date(Date.now() - 900000).toISOString() }
     ];
 
     let activeChatAgent = null;
     let currentAgentFilter = "all";
 
-    // Render Functions
     function renderKPIs() {
         const container = document.getElementById("kpiGrid");
         if (!container) return;
@@ -566,7 +625,7 @@
             <div class="kpi-card">
                 <div class="kpi-header">
                     <span class="kpi-icon">${kpi.icon}</span>
-                    <span class="trend ${kpi.change >= 0 ? 'up' : 'down'}">${kpi.change >= 0 ? '+' : ''}${kpi.change}%</span>
+                    <span class="trend ${kpi.change >= 0 ? 'up' : 'down'}">${kpi.change >= 0 ? '▲' : '▼'} ${Math.abs(kpi.change)}%</span>
                 </div>
                 <div class="kpi-value">${kpi.value}</div>
                 <div class="kpi-label">${kpi.label}</div>
@@ -590,10 +649,9 @@
                     </div>
                     <div class="status-light ${agent.status}"></div>
                 </div>
-                <div class="agent-task">🏃 ${agent.currentTask}</div>
+                <div class="agent-task">⧫ ${agent.currentTask}</div>
             </div>
         `).join('');
-        
         document.querySelectorAll('.agent-card').forEach(card => {
             const id = parseInt(card.dataset.agentId);
             card.addEventListener('click', () => showAgentDetails(id));
@@ -603,26 +661,21 @@
     function showAgentDetails(agentId) {
         const agent = agents.find(a => a.id === agentId);
         if (!agent) return;
-        alert(`🤖 ${agent.name} (${agent.role})\nStatus: ${agent.status.toUpperCase()}\nCurrent Task: ${agent.currentTask}\nUptime: 99.97% | Messages handled: ${Math.floor(Math.random() * 5000)}`);
+        alert(`⛭ AGENT: ${agent.name} (${agent.role})\n◈ STATUS: ${agent.status.toUpperCase()} · TASK: ${agent.currentTask}\n◈ UPTIME: 99.98% · ACTIVE VESSEL`);
     }
 
     function renderFilters() {
         const container = document.getElementById("agentFilters");
         if (!container) return;
-        const counts = {
-            all: agents.length,
-            green: agents.filter(a => a.status === 'green').length,
-            yellow: agents.filter(a => a.status === 'yellow').length,
-            red: agents.filter(a => a.status === 'red').length,
-        };
+        const counts = { all: agents.length, green: agents.filter(a=>a.status==='green').length, yellow: agents.filter(a=>a.status==='yellow').length, red: agents.filter(a=>a.status==='red').length };
         container.innerHTML = `
-            <button class="filter-btn ${currentAgentFilter === 'all' ? 'active' : ''}" data-filter="all">All (${counts.all})</button>
-            <button class="filter-btn ${currentAgentFilter === 'green' ? 'active' : ''}" data-filter="green">🟢 Green (${counts.green})</button>
-            <button class="filter-btn ${currentAgentFilter === 'yellow' ? 'active' : ''}" data-filter="yellow">🟡 Yellow (${counts.yellow})</button>
-            <button class="filter-btn ${currentAgentFilter === 'red' ? 'active' : ''}" data-filter="red">🔴 Red (${counts.red})</button>
+            <button class="filter-btn ${currentAgentFilter === 'all' ? 'active' : ''}" data-filter="all">ALL (${counts.all})</button>
+            <button class="filter-btn ${currentAgentFilter === 'green' ? 'active' : ''}" data-filter="green">🟢 OPERATIONAL (${counts.green})</button>
+            <button class="filter-btn ${currentAgentFilter === 'yellow' ? 'active' : ''}" data-filter="yellow">🟡 STANDBY (${counts.yellow})</button>
+            <button class="filter-btn ${currentAgentFilter === 'red' ? 'active' : ''}" data-filter="red">🔴 OFFLINE (${counts.red})</button>
         `;
         document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', () => {
                 currentAgentFilter = btn.dataset.filter;
                 renderFilters();
                 renderAgents();
@@ -633,18 +686,13 @@
     function renderChatFilters() {
         const container = document.getElementById("chatFilters");
         if (!container) return;
-        container.innerHTML = `
-            <button class="chat-agent-btn ${activeChatAgent === null ? 'active' : ''}" data-chat-agent="null">🏠 All Team</button>
-            ${agents.slice(0,6).map(agent => `<button class="chat-agent-btn ${activeChatAgent === agent.id ? 'active' : ''}" data-chat-agent="${agent.id}">🤖 ${agent.name}</button>`).join('')}
-            <button class="chat-agent-btn" data-chat-agent="more" style="background:#2c2c2c;">➕ More</button>
-        `;
+        container.innerHTML = `<button class="chat-agent-btn ${activeChatAgent === null ? 'active' : ''}" data-chat-agent="null">🌐 ALL CHANNELS</button>
+            ${agents.slice(0,7).map(agent => `<button class="chat-agent-btn ${activeChatAgent === agent.id ? 'active' : ''}" data-chat-agent="${agent.id}">🤖 ${agent.name}</button>`).join('')}
+            <button class="chat-agent-btn" data-chat-agent="more">⚙️ +8 MORE</button>`;
         document.querySelectorAll('[data-chat-agent]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const val = btn.dataset.chatAgent;
-                if (val === 'more') {
-                    alert("All 15 agents: Aurora, Nexus, Scribe, Ledger, Sentinel, Pulse, Vector, Echo, Nova, Cipher, Vox, Loom, Blaze, Atlas, Kode");
-                    return;
-                }
+                if (val === 'more') { alert("Full fleet: Hermes, Heph, Ares, Midas, Nike, Apollo, Echo, Iggy, Victor, Gina, Rex, Croesus, Hestia, Bill, Apex"); return; }
                 activeChatAgent = val === 'null' ? null : parseInt(val);
                 renderChatFilters();
                 renderMessages();
@@ -655,83 +703,54 @@
     function renderMessages() {
         const container = document.getElementById("messagesArea");
         if (!container) return;
-        let filteredMsgs = messages.filter(m => {
+        let filtered = messages.filter(m => {
             if (activeChatAgent === null) return true;
             if (m.agentId === activeChatAgent) return true;
             if (m.agentId === null && activeChatAgent !== null) return false;
             return false;
         });
-        container.innerHTML = filteredMsgs.map(msg => {
+        container.innerHTML = filtered.map(msg => {
             const isOutgoing = msg.sender === currentUser.email;
-            const senderDisplay = msg.agentId ? `🤖 ${agents.find(a=>a.id===msg.agentId)?.name || 'Agent'}` : (msg.senderName || msg.sender.split('@')[0]);
-            return `
-                <div class="message ${isOutgoing ? 'outgoing' : ''}">
-                    <div class="message-bubble">
-                        <div class="message-meta">${senderDisplay} • ${new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
-                        <div>${escapeHtml(msg.content)}</div>
-                    </div>
-                </div>
-            `;
+            let senderDisplay = msg.agentId ? `⚡ ${agents.find(a=>a.id===msg.agentId)?.name || 'Agent'}` : (msg.senderName || msg.sender.split('@')[0]);
+            if (!msg.agentId && !isOutgoing) senderDisplay = `👤 ${senderDisplay}`;
+            return `<div class="message ${isOutgoing ? 'outgoing' : ''}"><div class="message-bubble"><div class="message-meta">${senderDisplay} • ${new Date(msg.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div><div>${escapeHtml(msg.content)}</div></div></div>`;
         }).join('');
         container.scrollTop = container.scrollHeight;
     }
 
     function sendMessage(content) {
         if (!content.trim()) return;
-        const newMsg = {
-            id: Date.now().toString(),
-            sender: currentUser.email,
-            senderName: currentUser.name,
-            agentId: activeChatAgent,
-            content: content,
-            timestamp: new Date().toISOString()
-        };
+        const newMsg = { id: Date.now().toString(), sender: currentUser.email, senderName: currentUser.name, agentId: activeChatAgent, content: content, timestamp: new Date().toISOString() };
         messages.push(newMsg);
         renderMessages();
-
         if (activeChatAgent !== null) {
             setTimeout(() => {
                 const agentObj = agents.find(a => a.id === activeChatAgent);
                 if (agentObj) {
-                    const reply = {
-                        id: Date.now().toString() + "-reply",
-                        sender: "agent",
-                        senderName: agentObj.name,
-                        agentId: activeChatAgent,
-                        content: `✅ ${agentObj.name} received: "${content.substring(0,50)}". Working on ${agentObj.currentTask.toLowerCase()}.`,
-                        timestamp: new Date().toISOString()
-                    };
-                    messages.push(reply);
+                    messages.push({ id: Date.now()+"_reply", sender: "agent", senderName: agentObj.name, agentId: activeChatAgent, content: `🔵 ${agentObj.name} received: "${content.substring(0,55)}". Current op: ${agentObj.currentTask}.`, timestamp: new Date().toISOString() });
                     renderMessages();
                 }
-            }, 800);
+            }, 700);
         }
     }
 
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
 
     function startLiveKPISimulation() {
         setInterval(() => {
             kpiData = kpiData.map(kpi => {
                 let newVal = kpi.value;
-                if (kpi.id === 'deals') newVal = "$" + (Math.floor(Math.random() * 100) + 300) + "K";
-                else if (kpi.id === 'social') newVal = Math.floor(Math.random() * 300) + 100;
-                else if (kpi.id === 'tasks') newVal = Math.floor(Math.random() * 4000) + 1500;
-                else if (kpi.id === 'emails') newVal = Math.floor(Math.random() * 20000) + 8000;
-                else if (kpi.id === 'members') newVal = Math.floor(Math.random() * 500) + 500;
-                else if (kpi.id === 'cashflow') newVal = `+$${(Math.random() * 50).toFixed(1)}K / -$${(Math.random() * 30).toFixed(1)}K`;
-                const newChange = Math.floor(Math.random() * 35) - 5;
+                if (kpi.id === 'sales_pipeline') newVal = "$" + (Math.floor(Math.random() * 50) + 395) + "K";
+                else if (kpi.id === 'deals') newVal = Math.floor(Math.random() * 40) + 22;
+                else if (kpi.id === 'content_new') newVal = Math.floor(Math.random() * 200) + 120;
+                else if (kpi.id === 'mrr') newVal = "$" + (Math.floor(Math.random() * 15) + 88) + "K";
+                else if (kpi.id === 'cash_in') newVal = "+$" + (Math.floor(Math.random() * 30) + 52) + "K";
+                else if (kpi.id === 'community') newVal = Math.floor(Math.random() * 400) + 1100;
+                const newChange = Math.floor(Math.random() * 28) - 3;
                 return { ...kpi, value: newVal, change: newChange };
             });
             renderKPIs();
-        }, 25000);
+        }, 23000);
     }
 
     function initAuth() {
@@ -739,63 +758,27 @@
         const logoutBtn = document.getElementById("logoutBtn");
         const loginScreen = document.getElementById("loginScreen");
         const dashboard = document.getElementById("dashboardScreen");
-
         loginBtn.addEventListener("click", () => {
             const email = document.getElementById("loginEmail").value;
             const pwd = document.getElementById("loginPassword").value;
             if (email && pwd) {
-                currentUser.email = email;
-                currentUser.name = email.split('@')[0];
+                currentUser.email = email; currentUser.name = email.split('@')[0];
                 loginScreen.classList.add("hidden");
                 dashboard.classList.remove("hidden");
-                renderKPIs();
-                renderFilters();
-                renderAgents();
-                renderChatFilters();
-                renderMessages();
-            } else {
-                alert("Enter email & password");
-            }
+                renderKPIs(); renderFilters(); renderAgents(); renderChatFilters(); renderMessages();
+            } else alert("Enter commander credentials");
         });
-
-        if (logoutBtn) {
-            logoutBtn.addEventListener("click", () => {
-                dashboard.classList.add("hidden");
-                loginScreen.classList.remove("hidden");
-                document.getElementById("loginEmail").value = "me@example.com";
-                document.getElementById("loginPassword").value = "123456";
-                activeChatAgent = null;
-                currentAgentFilter = "all";
-            });
-        }
+        if (logoutBtn) logoutBtn.addEventListener("click", () => {
+            dashboard.classList.add("hidden");
+            loginScreen.classList.remove("hidden");
+            activeChatAgent = null; currentAgentFilter = "all";
+        });
     }
-
     function bindChatEvents() {
-        const sendBtn = document.getElementById("sendMsgBtn");
-        const chatInput = document.getElementById("chatInput");
-        if (sendBtn) {
-            sendBtn.addEventListener("click", () => {
-                sendMessage(chatInput.value);
-                chatInput.value = "";
-            });
-        }
-        if (chatInput) {
-            chatInput.addEventListener("keypress", (e) => {
-                if (e.key === "Enter") {
-                    sendMessage(chatInput.value);
-                    chatInput.value = "";
-                }
-            });
-        }
+        document.getElementById("sendMsgBtn")?.addEventListener("click", () => { const inp = document.getElementById("chatInput"); sendMessage(inp.value); inp.value = ""; });
+        document.getElementById("chatInput")?.addEventListener("keypress", (e) => { if(e.key === "Enter") { sendMessage(e.target.value); e.target.value = ""; } });
     }
-
-    function init() {
-        initAuth();
-        bindChatEvents();
-        startLiveKPISimulation();
-    }
-
-    init();
+    initAuth(); bindChatEvents(); startLiveKPISimulation();
 </script>
 </body>
 </html>
