@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>AI Mission Control | 15 Agents Online</title>
+    <title>AI Mission Control | Nexus Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -11,7 +11,27 @@
             box-sizing: border-box;
         }
 
-        /* VIDEO BACKGROUND - fullscreen immersive blue */
+        /* Deep space theme with electric blue & gold accents */
+        :root {
+            --bg-deep: #0a0c12;
+            --card-bg: rgba(12, 18, 28, 0.75);
+            --accent-blue: #3b82f6;
+            --accent-gold: #fbbf24;
+            --accent-gold-glow: rgba(251, 191, 36, 0.3);
+            --border-glow: rgba(59, 130, 246, 0.4);
+            --text-primary: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Mono', monospace;
+            color: var(--text-primary);
+            padding: 1.5rem;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* VIDEO BACKGROUND - fullscreen immersive */
         .video-background {
             position: fixed;
             top: 0;
@@ -22,360 +42,332 @@
             z-index: -2;
         }
         
-        /* Dark overlay to ensure readability and depth, matching video's blue mood */
+        /* Dark overlay to ensure readability and depth, matching video's mood */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 20%, rgba(8, 28, 68, 0.65), rgba(2, 10, 25, 0.85));
+            background: radial-gradient(circle at 30% 20%, rgba(8, 28, 68, 0.55), rgba(2, 10, 25, 0.85));
             z-index: -1;
             backdrop-filter: blur(1px);
         }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Mono', monospace;
-            color: #e2e8f0;
-            padding: clamp(0.75rem, 3vw, 1.5rem);
-            min-height: 100vh;
-            letter-spacing: 0.01em;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Custom scrollbar - electric blue accents */
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #3b82f6;
-            border-radius: 10px;
-            box-shadow: inset 0 0 2px #00000066;
-        }
-
         .container {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
             width: 100%;
         }
 
-        /* HEADER with electric blue accents - glassmorphism style to blend with video */
+        /* Header — glassmorphic with gold trim */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: clamp(1rem, 4vw, 1.5rem);
-            margin-bottom: clamp(1rem, 4vw, 1.5rem);
-            border-bottom: 1px solid rgba(59, 130, 246, 0.5);
-            flex-wrap: wrap;
-            gap: clamp(0.75rem, 3vw, 1rem);
-            background: rgba(5, 15, 35, 0.3);
-            backdrop-filter: blur(8px);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.8rem;
+            background: rgba(8, 12, 22, 0.5);
+            backdrop-filter: blur(12px);
             border-radius: 24px;
-            padding: clamp(0.75rem, 3vw, 1rem) clamp(1rem, 4vw, 1.5rem);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
+
         .logo-area {
             display: flex;
             align-items: center;
-            gap: clamp(0.5rem, 2vw, 0.75rem);
-            flex-wrap: wrap;
+            gap: 0.75rem;
         }
+
         .live-dot {
-            width: clamp(8px, 2vw, 10px);
-            height: clamp(8px, 2vw, 10px);
-            background-color: #3b82f6;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-blue);
             border-radius: 50%;
-            animation: pulse 1.6s infinite cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 6px #3b82f6;
+            animation: pulse 1.6s infinite;
+            box-shadow: 0 0 8px var(--accent-blue);
         }
+
         @keyframes pulse {
-            0% { opacity: 0.5; transform: scale(0.8); box-shadow: 0 0 0px #3b82f6;}
-            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 14px #3b82f6;}
+            0% { opacity: 0.5; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
         }
+
         h1 {
-            font-size: clamp(1.2rem, 5vw, 1.7rem);
-            background: linear-gradient(135deg, #b9e0ff, #3b82f6, #1e40af);
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #ffffff, var(--accent-blue), var(--accent-gold));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: -0.3px;
         }
+
         .badge {
-            background: rgba(59, 130, 246, 0.2);
-            padding: 0.25rem 0.9rem;
+            background: rgba(59, 130, 246, 0.15);
+            padding: 0.25rem 1rem;
             border-radius: 40px;
-            font-size: clamp(0.6rem, 2vw, 0.7rem);
+            font-size: 0.7rem;
             font-weight: 600;
-            color: #93c5fd;
-            border: 1px solid rgba(59, 130, 246, 0.6);
-            backdrop-filter: blur(4px);
+            color: var(--accent-gold);
+            border: 1px solid rgba(251, 191, 36, 0.5);
             font-family: monospace;
         }
+
         .logout-btn {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(8px);
-            border: 1px solid #3b82f6;
-            color: #bfdbfe;
-            padding: clamp(0.4rem, 2vw, 0.5rem) clamp(1rem, 3vw, 1.2rem);
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 0.5rem 1.2rem;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.25s;
             font-weight: 500;
-            font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+            font-size: 0.8rem;
         }
+
         .logout-btn:hover {
-            border-color: #60a5fa;
-            color: #ffffff;
+            border-color: var(--accent-blue);
+            color: white;
             background: rgba(59, 130, 246, 0.2);
             box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
         }
 
-        /* KPI cards - glassmorphic blue */
+        /* KPI Grid — gold-accented tiles */
         .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
-            gap: clamp(0.75rem, 2.5vw, 1rem);
-            margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
+
         .kpi-card {
-            background: rgba(8, 20, 40, 0.55);
+            background: rgba(10, 16, 28, 0.6);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            border-radius: clamp(16px, 4vw, 20px);
-            padding: clamp(0.75rem, 3vw, 1rem);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            padding: 1rem;
             transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
         }
+
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-blue), var(--accent-gold));
+        }
+
         .kpi-card:hover {
-            border-color: #3b82f6;
+            border-color: var(--accent-gold);
             transform: translateY(-2px);
-            background: rgba(12, 26, 50, 0.7);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.4);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(251, 191, 36, 0.3);
         }
+
         .kpi-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: clamp(0.5rem, 2vw, 0.75rem);
+            margin-bottom: 0.5rem;
         }
-        .kpi-icon {
-            font-size: clamp(1.2rem, 4vw, 1.5rem);
-            filter: drop-shadow(0 0 2px #3b82f6);
-        }
+
+        .kpi-icon { font-size: 1.4rem; }
         .trend {
-            font-size: clamp(0.65rem, 2vw, 0.7rem);
+            font-size: 0.65rem;
             font-weight: 700;
             padding: 0.2rem 0.5rem;
             border-radius: 40px;
-            font-family: monospace;
         }
         .trend.up { background: #064e3b80; color: #4ade80; border: 1px solid #22c55e; }
         .trend.down { background: #7f1d1d80; color: #fca5a5; border: 1px solid #ef4444; }
         .kpi-value {
-            font-size: clamp(1.3rem, 5vw, 1.7rem);
+            font-size: 1.6rem;
             font-weight: 700;
             margin-bottom: 0.25rem;
-            word-break: break-word;
-            color: #e0f2fe;
-            letter-spacing: -0.3px;
+            color: white;
         }
         .kpi-label {
-            font-size: clamp(0.65rem, 2vw, 0.7rem);
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #9ac2e6;
-            font-weight: 500;
+            letter-spacing: 1px;
+            color: var(--text-muted);
         }
 
-        /* Section dividers — electric blue glow */
+        /* Section dividers — gold bar */
         .section-title {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            margin: clamp(1rem, 4vw, 1.8rem) 0 clamp(0.75rem, 3vw, 1rem) 0;
+            gap: 0.75rem;
+            margin: 1.5rem 0 1rem 0;
         }
         .gold-bar {
             width: 5px;
-            height: clamp(18px, 4vw, 22px);
-            background: linear-gradient(145deg, #3b82f6, #1e3a8a);
+            height: 22px;
+            background: linear-gradient(145deg, var(--accent-blue), var(--accent-gold));
             border-radius: 3px;
-            box-shadow: 0 0 5px #3b82f6;
+            box-shadow: 0 0 6px var(--accent-gold);
         }
         .section-title h2 {
-            font-size: clamp(1rem, 4vw, 1.3rem);
+            font-size: 1.2rem;
             font-weight: 500;
-            letter-spacing: -0.2px;
             color: #e0f2fe;
-            text-shadow: 0 0 5px rgba(59,130,246,0.3);
         }
 
-        /* filters: blue tactical glass */
+        /* Filters */
         .filters {
             display: flex;
-            gap: clamp(0.4rem, 2vw, 0.5rem);
-            margin-bottom: clamp(1rem, 3vw, 1.2rem);
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
             flex-wrap: wrap;
         }
         .filter-btn {
             background: rgba(15, 30, 55, 0.6);
             backdrop-filter: blur(4px);
             border: 1px solid rgba(59, 130, 246, 0.5);
-            padding: clamp(0.3rem, 1.5vw, 0.4rem) clamp(0.8rem, 3vw, 1rem);
+            padding: 0.35rem 1rem;
             border-radius: 40px;
-            font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+            font-size: 0.75rem;
             cursor: pointer;
             color: #c7e2ff;
             transition: all 0.2s;
-            white-space: nowrap;
             font-weight: 500;
         }
         .filter-btn.active {
-            background: #3b82f6;
-            color: #ffffff;
+            background: var(--accent-gold);
+            color: #0a0c12;
+            border-color: var(--accent-gold);
             font-weight: 700;
-            border-color: #3b82f6;
-            box-shadow: 0 0 12px #3b82f6;
+            box-shadow: 0 0 12px var(--accent-gold);
         }
         .filter-btn:hover:not(.active) {
-            border-color: #60a5fa;
-            color: #ffffff;
-            background: rgba(59, 130, 246, 0.3);
+            border-color: var(--accent-gold);
+            color: white;
         }
 
-        /* Agent cards — deep glass cobalt */
+        /* Agent Grid — clean cards */
         .agent-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-            gap: clamp(0.75rem, 2.5vw, 1rem);
-            margin-bottom: clamp(1.5rem, 4vw, 2rem);
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
         .agent-card {
-            background: rgba(6, 18, 35, 0.55);
+            background: rgba(8, 14, 24, 0.6);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            border-radius: clamp(16px, 4vw, 20px);
-            padding: clamp(0.75rem, 3vw, 1rem);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            border-radius: 20px;
+            padding: 1rem;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
         .agent-card:hover {
-            border-color: #3b82f6;
+            border-color: var(--accent-gold);
             transform: translateY(-3px);
-            background: rgba(12, 26, 50, 0.7);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.5), 0 0 0 1px #3b82f6;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(251, 191, 36, 0.4);
         }
         .agent-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 0.75rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
         }
         .agent-info {
             display: flex;
             align-items: center;
-            gap: clamp(0.5rem, 2vw, 0.7rem);
-            flex: 1;
+            gap: 0.7rem;
         }
         .avatar {
-            width: clamp(35px, 8vw, 40px);
-            height: clamp(35px, 8vw, 40px);
+            width: 42px;
+            height: 42px;
             background: linear-gradient(145deg, #1e3a8a, #0f172a);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(1.1rem, 4vw, 1.3rem);
-            flex-shrink: 0;
-            border: 1px solid #3b82f6;
+            font-size: 1.3rem;
+            border: 1px solid var(--accent-blue);
         }
         .agent-name {
             font-weight: 700;
-            font-size: clamp(0.9rem, 3vw, 1rem);
-            color: #e0f2fe;
+            font-size: 1rem;
         }
         .agent-role {
-            font-size: clamp(0.65rem, 2.5vw, 0.7rem);
-            color: #a5c9ff;
+            font-size: 0.65rem;
+            color: var(--accent-gold);
             font-family: monospace;
         }
         .status-light {
-            width: clamp(8px, 2.5vw, 10px);
-            height: clamp(8px, 2.5vw, 10px);
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            flex-shrink: 0;
-            box-shadow: 0 0 5px currentColor;
+            box-shadow: 0 0 6px currentColor;
         }
         .green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
         .yellow { background: #eab308; box-shadow: 0 0 8px #eab308; }
         .red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
         .agent-task {
-            font-size: clamp(0.75rem, 2.5vw, 0.8rem);
-            color: #cfe3ff;
+            font-size: 0.75rem;
+            color: #cbd5e1;
             padding-top: 0.5rem;
             border-top: 1px solid rgba(59, 130, 246, 0.3);
-            word-break: break-word;
             font-family: monospace;
         }
 
-        /* Chat — deep blue glassmorphism */
+        /* Chat Section — gold accents */
         .chat-container {
-            background: rgba(2, 10, 22, 0.5);
+            background: rgba(4, 8, 18, 0.5);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(59, 130, 246, 0.4);
-            border-radius: clamp(20px, 5vw, 24px);
+            border-radius: 24px;
             overflow: hidden;
             margin-top: 0.5rem;
         }
         .chat-header {
-            background: rgba(8, 18, 35, 0.6);
-            padding: clamp(0.6rem, 2.5vw, 0.8rem);
-            border-bottom: 1px solid rgba(59, 130, 246, 0.4);
+            background: rgba(8, 18, 35, 0.7);
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(251, 191, 36, 0.4);
             display: flex;
-            gap: clamp(0.4rem, 2vw, 0.5rem);
+            gap: 0.5rem;
             flex-wrap: wrap;
             overflow-x: auto;
         }
         .chat-agent-btn {
             background: rgba(15, 30, 55, 0.7);
             border: 1px solid #2d4a7a;
-            padding: clamp(0.3rem, 1.5vw, 0.4rem) clamp(0.7rem, 2.5vw, 0.9rem);
+            padding: 0.35rem 0.9rem;
             border-radius: 30px;
-            font-size: clamp(0.7rem, 2.5vw, 0.75rem);
+            font-size: 0.7rem;
             cursor: pointer;
             color: #bfd9ff;
             white-space: nowrap;
             transition: all 0.2s;
         }
         .chat-agent-btn.active {
-            background: #3b82f6;
-            color: white;
+            background: var(--accent-gold);
+            color: #0a0c12;
             font-weight: 700;
-            border-color: #3b82f6;
-            box-shadow: 0 0 10px #3b82f6;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 10px var(--accent-gold);
         }
         .messages-area {
-            height: clamp(280px, 40vh, 320px);
+            height: 320px;
             overflow-y: auto;
-            padding: clamp(0.75rem, 3vw, 1rem);
+            padding: 1rem;
             display: flex;
             flex-direction: column;
-            gap: clamp(0.6rem, 2vw, 0.8rem);
-            background: rgba(1, 6, 18, 0.4);
+            gap: 0.8rem;
         }
         .message {
             display: flex;
-            gap: clamp(0.4rem, 2vw, 0.6rem);
-            max-width: min(85%, 400px);
+            gap: 0.6rem;
+            max-width: 85%;
         }
         .message.outgoing {
             margin-left: auto;
@@ -384,65 +376,62 @@
         .message-bubble {
             background: rgba(15, 30, 55, 0.8);
             backdrop-filter: blur(4px);
-            padding: clamp(0.5rem, 2vw, 0.6rem) clamp(0.75rem, 2.5vw, 1rem);
+            padding: 0.6rem 1rem;
             border-radius: 18px;
-            font-size: clamp(0.8rem, 2.5vw, 0.85rem);
+            font-size: 0.8rem;
             line-height: 1.4;
-            word-break: break-word;
             border: 1px solid #2e5480;
         }
         .message.outgoing .message-bubble {
-            background: #3b82f6;
-            color: #ffffff;
-            border-color: #60a5fa;
-            font-weight: 500;
+            background: linear-gradient(135deg, var(--accent-blue), #1e40af);
+            color: white;
+            border-color: var(--accent-gold);
             box-shadow: 0 2px 8px rgba(59,130,246,0.3);
         }
         .message-meta {
-            font-size: clamp(0.55rem, 2vw, 0.6rem);
-            color: #aac8ff;
+            font-size: 0.55rem;
+            color: var(--accent-gold);
             margin-bottom: 0.2rem;
             font-family: monospace;
         }
         .chat-input-area {
             display: flex;
-            gap: clamp(0.4rem, 2vw, 0.5rem);
-            padding: clamp(0.75rem, 3vw, 1rem);
-            border-top: 1px solid rgba(59, 130, 246, 0.4);
-            background: rgba(6, 14, 28, 0.6);
+            gap: 0.6rem;
+            padding: 1rem;
+            border-top: 1px solid rgba(251, 191, 36, 0.4);
+            background: rgba(6, 14, 28, 0.8);
         }
         .chat-input {
             flex: 1;
-            background: rgba(10, 22, 45, 0.8);
-            border: 1px solid #2d4a7a;
+            background: rgba(10, 22, 45, 0.9);
+            border: 1px solid var(--accent-gold);
             border-radius: 40px;
-            padding: clamp(0.6rem, 2.5vw, 0.7rem) clamp(0.8rem, 3vw, 1rem);
-            color: #e2edff;
+            padding: 0.7rem 1rem;
+            color: white;
             outline: none;
-            font-size: clamp(0.8rem, 2.5vw, 0.85rem);
+            font-size: 0.85rem;
         }
         .chat-input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 8px #3b82f6;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 8px var(--accent-blue);
         }
         .send-btn {
-            background: #3b82f6;
+            background: var(--accent-gold);
             border: none;
             border-radius: 40px;
-            padding: 0 clamp(1rem, 4vw, 1.4rem);
+            padding: 0 1.4rem;
             font-weight: 700;
-            color: white;
+            color: #0a0c12;
             cursor: pointer;
-            font-size: clamp(0.8rem, 2.5vw, 0.85rem);
             transition: 0.2s;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
         }
         .send-btn:hover {
-            background: #2563eb;
-            box-shadow: 0 0 12px #3b82f6;
+            background: var(--accent-blue);
+            color: white;
+            box-shadow: 0 0 12px var(--accent-blue);
         }
 
-        /* Login screen — glassmorphic blue command gate */
+        /* Login Screen */
         .login-screen {
             min-height: 100vh;
             display: flex;
@@ -453,63 +442,73 @@
             z-index: 2;
         }
         .login-card {
-            background: rgba(8, 18, 38, 0.65);
+            background: rgba(8, 18, 38, 0.8);
             backdrop-filter: blur(16px);
-            padding: clamp(1.5rem, 6vw, 2rem);
-            border-radius: clamp(24px, 6vw, 32px);
-            border: 1px solid #3b82f6;
-            box-shadow: 0 20px 35px -12px black, 0 0 20px rgba(59,130,246,0.2);
+            padding: 2rem;
+            border-radius: 32px;
+            border: 1px solid var(--accent-gold);
+            box-shadow: 0 20px 35px -12px black, 0 0 20px rgba(251, 191, 36, 0.2);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
         }
         .login-input {
             width: 100%;
-            background: rgba(10, 22, 45, 0.8);
-            border: 1px solid #2d4a7a;
-            padding: clamp(0.7rem, 2.5vw, 0.8rem);
+            background: rgba(10, 22, 45, 0.9);
+            border: 1px solid var(--accent-gold);
+            padding: 0.8rem;
             border-radius: 14px;
             margin: 0.8rem 0;
-            color: #e0edff;
-            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            color: white;
         }
         .login-input:focus {
-            border-color: #3b82f6;
+            border-color: var(--accent-blue);
             outline: none;
-            box-shadow: 0 0 8px #3b82f6;
+            box-shadow: 0 0 8px var(--accent-blue);
         }
         .login-btn {
-            background: #3b82f6;
+            background: var(--accent-gold);
             width: 100%;
-            padding: clamp(0.7rem, 2.5vw, 0.8rem);
+            padding: 0.8rem;
             border: none;
             border-radius: 14px;
             font-weight: bold;
             margin-top: 0.5rem;
             cursor: pointer;
-            font-size: clamp(0.9rem, 3vw, 1rem);
+            color: #0a0c12;
             transition: 0.2s;
-            color: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         .login-btn:hover {
-            background: #2563eb;
-            box-shadow: 0 0 15px #3b82f6;
+            background: var(--accent-blue);
+            color: white;
+            box-shadow: 0 0 15px var(--accent-blue);
         }
-        .hidden {
-            display: none;
-        }
+        .hidden { display: none; }
 
-        @media (max-width: 640px) {
-            body { padding: 0.75rem; }
+        @media (max-width: 768px) {
+            body { padding: 0.8rem; }
+            .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
             .agent-grid { grid-template-columns: 1fr; }
-            .message { max-width: 90%; }
-            .header { flex-direction: column; align-items: stretch; }
+            .message { max-width: 95%; }
         }
         @media (max-width: 480px) {
-            .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+            h1 { font-size: 1.1rem; }
+            .kpi-value { font-size: 1.2rem; }
         }
-        @media (hover: none) {
-            .agent-card:active { transform: scale(0.98); background: #1e3a8a80; }
+
+        /* Mobile video fallback - improves performance on phones */
+        @media (max-width: 768px) {
+            .video-background {
+                object-position: center;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .video-background {
+                display: none;
+            }
+            body {
+                background: linear-gradient(135deg, #0a0c12 0%, #020617 100%);
+            }
         }
     </style>
 </head>
@@ -523,53 +522,53 @@
 <div class="overlay"></div>
 
 <div id="app">
-    <!-- LOGIN SCREEN blue command access -->
+    <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="login-screen">
         <div class="login-card">
             <div style="text-align:center; margin-bottom:1rem;">
-                <span style="font-size: clamp(2rem, 8vw, 2.5rem); filter: drop-shadow(0 0 8px #3b82f6);">🤖</span>
-                <h2 style="margin-top:0.5rem; font-size: clamp(1.3rem, 5vw, 1.6rem); color:#e0f2fe;">AI Mission Control</h2>
-                <p style="color:#aac9ff; font-size: clamp(0.75rem, 3vw, 0.85rem);">Sign in to command agents</p>
+                <span style="font-size: 2.8rem;">🤖✨</span>
+                <h2 style="margin-top:0.5rem; color:white;">Nexus Mission Control</h2>
+                <p style="color:var(--accent-gold); font-size:0.8rem;">AI Agent Fleet · 15 active vessels</p>
             </div>
-            <input type="email" id="loginEmail" class="login-input" placeholder="COMMANDER ID" value="commander@blueops.com">
-            <input type="password" id="loginPassword" class="login-input" placeholder="ACCESS KEY" value="123456">
+            <input type="email" id="loginEmail" class="login-input" placeholder="Email" value="commander@nexus.ai">
+            <input type="password" id="loginPassword" class="login-input" placeholder="Password" value="123456">
             <button class="login-btn" id="doLoginBtn">⚡ ACCESS DASHBOARD</button>
-            <p style="font-size:0.65rem; text-align:center; margin-top:1rem; color:#6c8fc0;">demo: any email/pass</p>
+            <p style="font-size:0.65rem; text-align:center; margin-top:1rem; color:#6c8fc0;">Demo: any credentials</p>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD — mission control interface with video backdrop -->
+    <!-- MAIN DASHBOARD -->
     <div id="dashboardScreen" class="container hidden">
         <div class="header">
             <div class="logo-area">
                 <div class="live-dot"></div>
-                <h1>◈AI Mission Control</h1>
-                <div class="badge">⚡ 15 ACTIVE VESSELS · PM2 UPTIME</div>
+                <h1>◈ AI Nexus · Mission Control</h1>
+                <div class="badge">⚡ 15 AGENTS · GOLD PROTOCOL</div>
             </div>
-            <button class="logout-btn" id="logoutBtn">⤫ TERMINATE SESSION</button>
+            <button class="logout-btn" id="logoutBtn">⤿ TERMINATE SESSION</button>
         </div>
 
-        <!-- COMMAND TELEMETRY (KPI) - blue theme -->
+        <!-- TOP: Live Business Metrics -->
         <div class="kpi-grid" id="kpiGrid"></div>
 
-        <!-- AGENT FLEET SECTION -->
+        <!-- MIDDLE: Agent List -->
         <div class="section-title">
             <div class="gold-bar"></div>
-            <h2>🤖 AGENT FLEET · OPERATIONAL STATUS</h2>
+            <h2>🤖 AGENT FLEET · REAL-TIME STATUS</h2>
         </div>
         <div class="filters" id="agentFilters"></div>
         <div class="agent-grid" id="agentGrid"></div>
 
-        <!-- MISSION LOG CHAT - blue comm channel -->
+        <!-- BOTTOM: Team Chat with AI Agents -->
         <div class="section-title">
             <div class="gold-bar"></div>
-            <h2>📡 MISSION LOG · COMM CHANNEL</h2>
+            <h2>📡 TEAM COMMS · LIVE CHANNEL</h2>
         </div>
         <div class="chat-container">
             <div class="chat-header" id="chatFilters"></div>
             <div class="messages-area" id="messagesArea"></div>
             <div class="chat-input-area">
-                <input type="text" class="chat-input" id="chatInput" placeholder="Transmit message to active channel ...">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Message any agent or team member...">
                 <button class="send-btn" id="sendMsgBtn">⟫ SEND</button>
             </div>
         </div>
@@ -577,64 +576,100 @@
 </div>
 
 <script>
-    // AGENT FLEET: 15 vessels — inspired by reference names (Hermes, Heph, Ares etc)
-    const agents = [
-        { id: 1, name: "Hermes", role: "Chief of Staff", status: "green", currentTask: "Preparing Monday priorities for Akhtar", icon: "📋" },
-        { id: 2, name: "Heph", role: "COO", status: "green", currentTask: "Reconciling ops blockers across Notion", icon: "⚙️" },
-        { id: 3, name: "Ares", role: "Sales / CSO", status: "yellow", currentTask: "Drafting proposal for Vaughan deal", icon: "🤝" },
-        { id: 4, name: "Midas", role: "M&A Deals", status: "green", currentTask: "Screening two acquisition targets", icon: "💰" },
-        { id: 5, name: "Nike", role: "CMO", status: "green", currentTask: "Sequencing campaign posts for retreat offer", icon: "📢" },
-        { id: 6, name: "Apollo", role: "LinkedIn Agent", status: "green", currentTask: "Writing founder authority post", icon: "🔗" },
-        { id: 7, name: "Echo", role: "Email VA", status: "green", currentTask: "Sending follow-up batch to warm leads", icon: "✉️" },
-        { id: 8, name: "Iggy", role: "Instagram", status: "yellow", currentTask: "Replying to high-intent Instagram DMs", icon: "📸" },
-        { id: 9, name: "Victor", role: "Video / IP", status: "green", currentTask: "Rendering testimonial short-form edits", icon: "🎬" },
-        { id: 10, name: "Gina", role: "Google Drive", status: "green", currentTask: "Organising retreat asset folders", icon: "📁" },
-        { id: 11, name: "Rex", role: "Brand Reputation", status: "green", currentTask: "Monitoring reviews and brand mentions", icon: "🛡️" },
-        { id: 12, name: "Croesus", role: "CFO", status: "green", currentTask: "Reconciling April cash movement", icon: "📊" },
-        { id: 13, name: "Hestia", role: "Community", status: "green", currentTask: "Welcoming new Inner Circle members", icon: "🏛️" },
-        { id: 14, name: "Bill", role: "Mentor", status: "green", currentTask: "Preparing weekly accountability prompts", icon: "🧠" },
-        { id: 15, name: "Apex", role: "Health Coach", status: "yellow", currentTask: "Waiting on wearable sync credentials", icon: "🏋️" }
+    // 15 AI Agents (Sales, Marketing, Content, Finance, Admin roles)
+    const AGENTS = [
+        { id: 1, name: "Nexus Sales", role: "Sales Pipeline", status: "green", currentTask: "Closing 3 enterprise deals · CRM sync active", icon: "📊", dept: "sales" },
+        { id: 2, name: "Vantage", role: "Marketing Ops", status: "green", currentTask: "Running LinkedIn campaign · 47 new leads", icon: "📢", dept: "marketing" },
+        { id: 3, name: "Quill", role: "Content AI", status: "green", currentTask: "Drafting weekly newsletter + 8 blog posts", icon: "✍️", dept: "content" },
+        { id: 4, name: "Ledger", role: "Finance Agent", status: "green", currentTask: "Reconciling Q2 revenue · invoicing batch", icon: "💰", dept: "finance" },
+        { id: 5, name: "Atlas", role: "Admin Ops", status: "green", currentTask: "Managing Notion tasks & team calendar", icon: "📋", dept: "admin" },
+        { id: 6, name: "Aether", role: "Social Media", status: "green", currentTask: "Scheduling 12 posts via Blotato", icon: "📸", dept: "marketing" },
+        { id: 7, name: "Echo", role: "Email Outreach", status: "green", currentTask: "Warm follow-ups · 142 emails sent", icon: "✉️", dept: "sales" },
+        { id: 8, name: "Pulse", role: "Analytics", status: "yellow", currentTask: "Processing GHL webhooks · slight delay", icon: "📈", dept: "finance" },
+        { id: 9, name: "Zephyr", role: "Client Support", status: "green", currentTask: "Handling 23 support tickets", icon: "🎧", dept: "admin" },
+        { id: 10, name: "Aegis", role: "Compliance", status: "green", currentTask: "Reviewing contracts & legal docs", icon: "🛡️", dept: "admin" },
+        { id: 11, name: "Nova", role: "Product Launch", status: "green", currentTask: "Coordinating retreat launch assets", icon: "🚀", dept: "marketing" },
+        { id: 12, name: "Cipher", role: "Data Engineer", status: "green", currentTask: "ETL pipelines · Notion to Supabase sync", icon: "🔧", dept: "finance" },
+        { id: 13, name: "Solara", role: "Community", status: "yellow", currentTask: "Onboarding 58 new members", icon: "👥", dept: "marketing" },
+        { id: 14, name: "Titan", role: "Strategic Ops", status: "green", currentTask: "Q3 roadmap planning", icon: "🎯", dept: "sales" },
+        { id: 15, name: "Oracle", role: "Predictive AI", status: "green", currentTask: "Forecasting Q2 closing numbers", icon: "🔮", dept: "finance" }
     ];
 
-    let currentUser = { email: "commander@blueops.com", name: "Commander" };
-    let kpiData = [
-        { id: "sales_pipeline", label: "SALES PIPELINE", value: "$419,295", change: 14, icon: "📈" },
-        { id: "deals", label: "DEALS CLOSED", value: "28", change: 22, icon: "🏆" },
-        { id: "content_new", label: "CONTENT ASSETS", value: "147", change: 8, icon: "🎙️" },
-        { id: "mrr", label: "MRR", value: "$94.2K", change: 12, icon: "💎" },
-        { id: "cash_in", label: "CASH IN", value: "+$62.4K", change: 9, icon: "⬆️" },
-        { id: "community", label: "INNER CIRCLE", value: "1,247", change: 17, icon: "👥" }
+    // KPI metrics (live business numbers)
+    let metrics = [
+        { id: "pipeline", label: "DEALS IN PIPELINE", value: "$1.24M", change: 18, icon: "🎯" },
+        { id: "cash_in", label: "MONEY IN (MTD)", value: "+$284K", change: 12, icon: "📈" },
+        { id: "cash_out", label: "MONEY OUT", value: "$142K", change: -5, icon: "📉" },
+        { id: "social_posts", label: "SOCIAL POSTS", value: "87", change: 24, icon: "📱" },
+        { id: "new_members", label: "NEW MEMBERS", value: "312", change: 41, icon: "👥" },
+        { id: "emails_sent", label: "EMAILS SENT", value: "4,892", change: 9, icon: "✉️" },
+        { id: "tasks_done", label: "TASKS COMPLETED", value: "347", change: 22, icon: "✅" }
     ];
 
-    let messages = [
-        { id: "1", sender: "commander@blueops.com", senderName: "Commander", agentId: null, content: "BLUE DECK: all agents confirm status. Hermes, sync priorities.", timestamp: new Date(Date.now() - 4200000).toISOString() },
-        { id: "2", sender: "agent", senderName: "Hermes", agentId: 1, content: "Priority deck ready. Monday alignment scheduled for 9am.", timestamp: new Date(Date.now() - 3800000).toISOString() },
-        { id: "3", sender: "agent", senderName: "Ares", agentId: 3, content: "Vaughan deal proposal 80% drafted. Awaiting final numbers from Croesus.", timestamp: new Date(Date.now() - 3100000).toISOString() },
-        { id: "4", sender: "agent", senderName: "Croesus", agentId: 12, content: "Cash motion reconciled. April surplus +12% ⬆️", timestamp: new Date(Date.now() - 2500000).toISOString() },
-        { id: "5", sender: "commander@blueops.com", senderName: "Commander", agentId: null, content: "Acknowledge. Fleet maintain blue protocol. Midas, acquisition update?", timestamp: new Date(Date.now() - 1800000).toISOString() },
-        { id: "6", sender: "agent", senderName: "Midas", agentId: 4, content: "Screening two targets; due diligence phase.", timestamp: new Date(Date.now() - 900000).toISOString() }
+    // Team users (3 users: me, Nick, Mary)
+    const TEAM_USERS = [
+        { email: "commander@nexus.ai", name: "Commander" },
+        { email: "nick@nexus.ai", name: "Nick" },
+        { email: "mary@nexus.ai", name: "Mary" }
+    ];
+    let currentUser = { email: "commander@nexus.ai", name: "Commander" };
+
+    // Chat messages history (team + agents)
+    let chatMessages = [
+        { id: "1", senderType: "user", senderEmail: "commander@nexus.ai", senderName: "Commander", agentId: null, content: "All agents, status report? Team standup in 10min.", timestamp: new Date(Date.now() - 3600000).toISOString() },
+        { id: "2", senderType: "agent", senderName: "Nexus Sales", agentId: 1, content: "Pipeline hot. 3 deals at closing stage.", timestamp: new Date(Date.now() - 3500000).toISOString() },
+        { id: "3", senderType: "agent", senderName: "Quill", agentId: 3, content: "Content calendar full. 8 posts ready for review.", timestamp: new Date(Date.now() - 3400000).toISOString() },
+        { id: "4", senderType: "user", senderEmail: "nick@nexus.ai", senderName: "Nick", agentId: null, content: "Ledger, can you pull Q2 vs Q1 comparison?", timestamp: new Date(Date.now() - 3000000).toISOString() },
+        { id: "5", senderType: "agent", senderName: "Ledger", agentId: 4, content: "Nick, pulling now. Revenue up 22% YoY.", timestamp: new Date(Date.now() - 2800000).toISOString() },
+        { id: "6", senderType: "user", senderEmail: "mary@nexus.ai", senderName: "Mary", agentId: null, content: "Aether, social engagement report please.", timestamp: new Date(Date.now() - 2000000).toISOString() },
+        { id: "7", senderType: "agent", senderName: "Aether", agentId: 6, content: "Mary: 1.2k engagements last 7 days. Top post: retreat announcement.", timestamp: new Date(Date.now() - 1800000).toISOString() }
     ];
 
-    let activeChatAgent = null;
-    let currentAgentFilter = "all";
+    let activeChatFilter = null; // null = all, or agentId
+    let currentAgentStatusFilter = "all";
 
+    // Helper functions
     function renderKPIs() {
         const container = document.getElementById("kpiGrid");
         if (!container) return;
-        container.innerHTML = kpiData.map(kpi => `
+        container.innerHTML = metrics.map(m => `
             <div class="kpi-card">
                 <div class="kpi-header">
-                    <span class="kpi-icon">${kpi.icon}</span>
-                    <span class="trend ${kpi.change >= 0 ? 'up' : 'down'}">${kpi.change >= 0 ? '▲' : '▼'} ${Math.abs(kpi.change)}%</span>
+                    <span class="kpi-icon">${m.icon}</span>
+                    <span class="trend ${m.change >= 0 ? 'up' : 'down'}">${m.change >= 0 ? '▲' : '▼'} ${Math.abs(m.change)}%</span>
                 </div>
-                <div class="kpi-value">${kpi.value}</div>
-                <div class="kpi-label">${kpi.label}</div>
+                <div class="kpi-value">${m.value}</div>
+                <div class="kpi-label">${m.label}</div>
             </div>
         `).join('');
     }
 
-    function renderAgents() {
-        const filtered = currentAgentFilter === "all" ? agents : agents.filter(a => a.status === currentAgentFilter);
+    function renderAgentFilters() {
+        const container = document.getElementById("agentFilters");
+        if (!container) return;
+        const counts = {
+            all: AGENTS.length,
+            green: AGENTS.filter(a => a.status === 'green').length,
+            yellow: AGENTS.filter(a => a.status === 'yellow').length,
+            red: AGENTS.filter(a => a.status === 'red').length
+        };
+        container.innerHTML = `
+            <button class="filter-btn ${currentAgentStatusFilter === 'all' ? 'active' : ''}" data-filter="all">ALL (${counts.all})</button>
+            <button class="filter-btn ${currentAgentStatusFilter === 'green' ? 'active' : ''}" data-filter="green">🟢 OPERATIONAL (${counts.green})</button>
+            <button class="filter-btn ${currentAgentStatusFilter === 'yellow' ? 'active' : ''}" data-filter="yellow">🟡 STANDBY (${counts.yellow})</button>
+            <button class="filter-btn ${currentAgentStatusFilter === 'red' ? 'active' : ''}" data-filter="red">🔴 OFFLINE (${counts.red})</button>
+        `;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentAgentStatusFilter = btn.dataset.filter;
+                renderAgentFilters();
+                renderAgentGrid();
+            });
+        });
+    }
+
+    function renderAgentGrid() {
+        const filtered = currentAgentStatusFilter === "all" ? AGENTS : AGENTS.filter(a => a.status === currentAgentStatusFilter);
         const container = document.getElementById("agentGrid");
         if (!container) return;
         container.innerHTML = filtered.map(agent => `
@@ -649,36 +684,14 @@
                     </div>
                     <div class="status-light ${agent.status}"></div>
                 </div>
-                <div class="agent-task">⧫ ${agent.currentTask}</div>
+                <div class="agent-task">⟡ ${agent.currentTask}</div>
             </div>
         `).join('');
         document.querySelectorAll('.agent-card').forEach(card => {
             const id = parseInt(card.dataset.agentId);
-            card.addEventListener('click', () => showAgentDetails(id));
-        });
-    }
-
-    function showAgentDetails(agentId) {
-        const agent = agents.find(a => a.id === agentId);
-        if (!agent) return;
-        alert(`⛭ AGENT: ${agent.name} (${agent.role})\n◈ STATUS: ${agent.status.toUpperCase()} · TASK: ${agent.currentTask}\n◈ UPTIME: 99.98% · ACTIVE VESSEL`);
-    }
-
-    function renderFilters() {
-        const container = document.getElementById("agentFilters");
-        if (!container) return;
-        const counts = { all: agents.length, green: agents.filter(a=>a.status==='green').length, yellow: agents.filter(a=>a.status==='yellow').length, red: agents.filter(a=>a.status==='red').length };
-        container.innerHTML = `
-            <button class="filter-btn ${currentAgentFilter === 'all' ? 'active' : ''}" data-filter="all">ALL (${counts.all})</button>
-            <button class="filter-btn ${currentAgentFilter === 'green' ? 'active' : ''}" data-filter="green">🟢 OPERATIONAL (${counts.green})</button>
-            <button class="filter-btn ${currentAgentFilter === 'yellow' ? 'active' : ''}" data-filter="yellow">🟡 STANDBY (${counts.yellow})</button>
-            <button class="filter-btn ${currentAgentFilter === 'red' ? 'active' : ''}" data-filter="red">🔴 OFFLINE (${counts.red})</button>
-        `;
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                currentAgentFilter = btn.dataset.filter;
-                renderFilters();
-                renderAgents();
+            card.addEventListener('click', () => {
+                const agent = AGENTS.find(a => a.id === id);
+                alert(`🤖 AGENT DETAILS\n\nName: ${agent.name}\nRole: ${agent.role}\nStatus: ${agent.status.toUpperCase()}\nCurrent Task: ${agent.currentTask}\nDepartment: ${agent.dept}\nUptime: 99.97% · Active since 2025`);
             });
         });
     }
@@ -686,71 +699,135 @@
     function renderChatFilters() {
         const container = document.getElementById("chatFilters");
         if (!container) return;
-        container.innerHTML = `<button class="chat-agent-btn ${activeChatAgent === null ? 'active' : ''}" data-chat-agent="null">🌐 ALL CHANNELS</button>
-            ${agents.slice(0,7).map(agent => `<button class="chat-agent-btn ${activeChatAgent === agent.id ? 'active' : ''}" data-chat-agent="${agent.id}">🤖 ${agent.name}</button>`).join('')}
-            <button class="chat-agent-btn" data-chat-agent="more">⚙️ +8 MORE</button>`;
-        document.querySelectorAll('[data-chat-agent]').forEach(btn => {
+        let html = `<button class="chat-agent-btn ${activeChatFilter === null ? 'active' : ''}" data-chat-filter="all">🌐 ALL CHANNELS</button>`;
+        AGENTS.slice(0, 8).forEach(agent => {
+            html += `<button class="chat-agent-btn ${activeChatFilter === agent.id ? 'active' : ''}" data-chat-filter="${agent.id}">🤖 ${agent.name}</button>`;
+        });
+        html += `<button class="chat-agent-btn" data-chat-filter="more">⚙️ +7 MORE</button>`;
+        container.innerHTML = html;
+        
+        document.querySelectorAll('[data-chat-filter]').forEach(btn => {
             btn.addEventListener('click', () => {
-                const val = btn.dataset.chatAgent;
-                if (val === 'more') { alert("Full fleet: Hermes, Heph, Ares, Midas, Nike, Apollo, Echo, Iggy, Victor, Gina, Rex, Croesus, Hestia, Bill, Apex"); return; }
-                activeChatAgent = val === 'null' ? null : parseInt(val);
+                const val = btn.dataset.chatFilter;
+                if (val === 'more') {
+                    alert("Full Fleet: Nexus Sales, Vantage, Quill, Ledger, Atlas, Aether, Echo, Pulse, Zephyr, Aegis, Nova, Cipher, Solara, Titan, Oracle");
+                    return;
+                }
+                if (val === 'all') activeChatFilter = null;
+                else activeChatFilter = parseInt(val);
                 renderChatFilters();
-                renderMessages();
+                renderChatMessages();
             });
         });
     }
 
-    function renderMessages() {
+    function renderChatMessages() {
         const container = document.getElementById("messagesArea");
         if (!container) return;
-        let filtered = messages.filter(m => {
-            if (activeChatAgent === null) return true;
-            if (m.agentId === activeChatAgent) return true;
-            if (m.agentId === null && activeChatAgent !== null) return false;
+        let filtered = chatMessages.filter(msg => {
+            if (activeChatFilter === null) return true;
+            if (msg.agentId === activeChatFilter) return true;
+            if (msg.senderType === 'user' && activeChatFilter !== null) return false;
             return false;
         });
         container.innerHTML = filtered.map(msg => {
-            const isOutgoing = msg.sender === currentUser.email;
-            let senderDisplay = msg.agentId ? `⚡ ${agents.find(a=>a.id===msg.agentId)?.name || 'Agent'}` : (msg.senderName || msg.sender.split('@')[0]);
-            if (!msg.agentId && !isOutgoing) senderDisplay = `👤 ${senderDisplay}`;
-            return `<div class="message ${isOutgoing ? 'outgoing' : ''}"><div class="message-bubble"><div class="message-meta">${senderDisplay} • ${new Date(msg.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div><div>${escapeHtml(msg.content)}</div></div></div>`;
+            const isOutgoing = msg.senderType === 'user' && msg.senderEmail === currentUser.email;
+            let senderDisplay = "";
+            if (msg.agentId) {
+                const agent = AGENTS.find(a => a.id === msg.agentId);
+                senderDisplay = `⚡ ${agent?.name || 'Agent'}`;
+            } else {
+                senderDisplay = `👤 ${msg.senderName}`;
+            }
+            return `
+                <div class="message ${isOutgoing ? 'outgoing' : ''}">
+                    <div class="message-bubble">
+                        <div class="message-meta">${senderDisplay} • ${new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+                        <div>${escapeHtml(msg.content)}</div>
+                    </div>
+                </div>
+            `;
         }).join('');
         container.scrollTop = container.scrollHeight;
     }
 
-    function sendMessage(content) {
+    function sendNewMessage(content) {
         if (!content.trim()) return;
-        const newMsg = { id: Date.now().toString(), sender: currentUser.email, senderName: currentUser.name, agentId: activeChatAgent, content: content, timestamp: new Date().toISOString() };
-        messages.push(newMsg);
-        renderMessages();
-        if (activeChatAgent !== null) {
+        const newMsg = {
+            id: Date.now().toString(),
+            senderType: "user",
+            senderEmail: currentUser.email,
+            senderName: currentUser.name,
+            agentId: null,
+            content: content,
+            timestamp: new Date().toISOString()
+        };
+        chatMessages.push(newMsg);
+        renderChatMessages();
+        
+        if (activeChatFilter !== null) {
+            const targetAgent = AGENTS.find(a => a.id === activeChatFilter);
+            if (targetAgent) {
+                setTimeout(() => {
+                    const replyMsg = {
+                        id: Date.now() + "_reply",
+                        senderType: "agent",
+                        senderName: targetAgent.name,
+                        agentId: targetAgent.id,
+                        content: `🔵 ${targetAgent.name} acknowledges: "${content.substring(0, 60)}". Currently: ${targetAgent.currentTask}.`,
+                        timestamp: new Date().toISOString()
+                    };
+                    chatMessages.push(replyMsg);
+                    renderChatMessages();
+                }, 800);
+            }
+        } else {
+            const randomAgent = AGENTS[Math.floor(Math.random() * AGENTS.length)];
             setTimeout(() => {
-                const agentObj = agents.find(a => a.id === activeChatAgent);
-                if (agentObj) {
-                    messages.push({ id: Date.now()+"_reply", sender: "agent", senderName: agentObj.name, agentId: activeChatAgent, content: `🔵 ${agentObj.name} received: "${content.substring(0,55)}". Current op: ${agentObj.currentTask}.`, timestamp: new Date().toISOString() });
-                    renderMessages();
-                }
-            }, 700);
+                const autoReply = {
+                    id: Date.now() + "_auto",
+                    senderType: "agent",
+                    senderName: randomAgent.name,
+                    agentId: randomAgent.id,
+                    content: `📡 ${randomAgent.name} received. Standing by. Current op: ${randomAgent.currentTask}.`,
+                    timestamp: new Date().toISOString()
+                };
+                chatMessages.push(autoReply);
+                renderChatMessages();
+            }, 1200);
         }
     }
 
-    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
 
-    function startLiveKPISimulation() {
+    function startLiveMetricsSimulation() {
         setInterval(() => {
-            kpiData = kpiData.map(kpi => {
-                let newVal = kpi.value;
-                if (kpi.id === 'sales_pipeline') newVal = "$" + (Math.floor(Math.random() * 50) + 395) + "K";
-                else if (kpi.id === 'deals') newVal = Math.floor(Math.random() * 40) + 22;
-                else if (kpi.id === 'content_new') newVal = Math.floor(Math.random() * 200) + 120;
-                else if (kpi.id === 'mrr') newVal = "$" + (Math.floor(Math.random() * 15) + 88) + "K";
-                else if (kpi.id === 'cash_in') newVal = "+$" + (Math.floor(Math.random() * 30) + 52) + "K";
-                else if (kpi.id === 'community') newVal = Math.floor(Math.random() * 400) + 1100;
-                const newChange = Math.floor(Math.random() * 28) - 3;
-                return { ...kpi, value: newVal, change: newChange };
+            metrics = metrics.map(m => {
+                let newValue = m.value;
+                const rawNum = parseFloat(m.value.replace(/[^0-9.-]/g, ''));
+                if (!isNaN(rawNum)) {
+                    let factor = 0.95 + Math.random() * 0.1;
+                    let updated = Math.floor(rawNum * factor);
+                    if (m.id === 'pipeline') newValue = "$" + (updated / 1000).toFixed(0) + "K";
+                    else if (m.id === 'cash_in') newValue = "+$" + updated + "K";
+                    else if (m.id === 'cash_out') newValue = "$" + updated + "K";
+                    else if (m.id === 'social_posts') newValue = updated.toString();
+                    else if (m.id === 'new_members') newValue = updated.toString();
+                    else if (m.id === 'emails_sent') newValue = updated.toLocaleString();
+                    else if (m.id === 'tasks_done') newValue = updated.toString();
+                }
+                const newChange = Math.floor(Math.random() * 25) - 5;
+                return { ...m, value: newValue, change: newChange };
             });
             renderKPIs();
-        }, 23000);
+        }, 25000);
     }
 
     function initAuth() {
@@ -758,27 +835,52 @@
         const logoutBtn = document.getElementById("logoutBtn");
         const loginScreen = document.getElementById("loginScreen");
         const dashboard = document.getElementById("dashboardScreen");
+        
         loginBtn.addEventListener("click", () => {
             const email = document.getElementById("loginEmail").value;
             const pwd = document.getElementById("loginPassword").value;
             if (email && pwd) {
-                currentUser.email = email; currentUser.name = email.split('@')[0];
+                const matched = TEAM_USERS.find(u => u.email === email);
+                if (matched) currentUser = matched;
+                else currentUser = { email: email, name: email.split('@')[0] };
                 loginScreen.classList.add("hidden");
                 dashboard.classList.remove("hidden");
-                renderKPIs(); renderFilters(); renderAgents(); renderChatFilters(); renderMessages();
-            } else alert("Enter commander credentials");
+                renderKPIs();
+                renderAgentFilters();
+                renderAgentGrid();
+                renderChatFilters();
+                renderChatMessages();
+            } else alert("Enter credentials");
         });
-        if (logoutBtn) logoutBtn.addEventListener("click", () => {
-            dashboard.classList.add("hidden");
-            loginScreen.classList.remove("hidden");
-            activeChatAgent = null; currentAgentFilter = "all";
-        });
+        
+        if (logoutBtn) {
+            logoutBtn.addEventListener("click", () => {
+                dashboard.classList.add("hidden");
+                loginScreen.classList.remove("hidden");
+                activeChatFilter = null;
+                currentAgentStatusFilter = "all";
+            });
+        }
     }
+    
     function bindChatEvents() {
-        document.getElementById("sendMsgBtn")?.addEventListener("click", () => { const inp = document.getElementById("chatInput"); sendMessage(inp.value); inp.value = ""; });
-        document.getElementById("chatInput")?.addEventListener("keypress", (e) => { if(e.key === "Enter") { sendMessage(e.target.value); e.target.value = ""; } });
+        const sendBtn = document.getElementById("sendMsgBtn");
+        const chatInput = document.getElementById("chatInput");
+        sendBtn?.addEventListener("click", () => {
+            sendNewMessage(chatInput.value);
+            chatInput.value = "";
+        });
+        chatInput?.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                sendNewMessage(chatInput.value);
+                chatInput.value = "";
+            }
+        });
     }
-    initAuth(); bindChatEvents(); startLiveKPISimulation();
+    
+    initAuth();
+    bindChatEvents();
+    startLiveMetricsSimulation();
 </script>
 </body>
 </html>
